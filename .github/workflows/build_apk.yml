@@ -15,6 +15,13 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      - name: Inspect Repository Structure
+        run: |
+          echo "=== Cấu trúc thư mục hiện tại ==="
+          ls -la
+          echo "=== Tìm các tệp Gradle trong kho lưu trữ ==="
+          find . -name "settings.gradle*" -o -name "build.gradle*"
+
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
@@ -26,8 +33,15 @@ jobs:
 
       - name: Build APK
         run: |
-          BUILD_DIR=$(find . -name "settings.gradle*" -exec dirname {} \;)
-          cd "$BUILD_DIR"
+          # Tự động tìm thư mục chứa tệp settings.gradle
+          PROJECT_DIR=$(find . -name "settings.gradle*" -exec dirname {} \; | head -n 1)
+          if [ -z "$PROJECT_DIR" ]; then
+            echo "Lỗi: Không tìm thấy tệp settings.gradle! Vui lòng kiểm tra lại cấu trúc mã nguồn đã tải lên."
+            exit 1
+          fi
+          echo "Đã tìm thấy dự án tại thư mục: $PROJECT_DIR"
+          cd "$PROJECT_DIR"
+          
           if [ -f "./gradlew" ]; then
             chmod +x gradlew
             ./gradlew assembleDebug --stacktrace
