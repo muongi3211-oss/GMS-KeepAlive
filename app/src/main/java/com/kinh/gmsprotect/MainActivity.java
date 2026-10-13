@@ -54,12 +54,6 @@ public class MainActivity extends Activity {
         AurogonAllowlistService.startIfEnabled(this);
         WilletWatchScheduler.schedule(this);
 
-        if (isSetupDone()) {
-            recordReturningLaunchForDonate();
-            showMainScreen();
-        } else {
-            continueSetupFlow();
-        }
     }
 
     @Override
