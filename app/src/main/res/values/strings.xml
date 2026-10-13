@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">GMS Protect</string>
+    <string name="aurogan_allowlist_title">Aurogan Allowlist</string>
+    <string name="aurogan_allowlist_desc">Quản lý danh sách cho phép để duy trì hoạt động nền ổn định.</string>
+    <string name="aurogan_allowlist_timing">Tần suất và thời gian thực thi nền</string>
+    <string name="aurogan_allowlist_enabled">Đã bật Aurogan Allowlist</string>
+    <string name="aurogan_allowlist_disabled">Đã tắt Aurogan Allowlist</string>
+    <string name="aurogan_allowlist_failed">Không thể áp dụng thiết lập, vui lòng thử lại</string>
     <string name="header_subtitle">Protection for Google Play services on HyperOS</string>
     <string name="start">Get started</string>
     <string name="continue_text">Continue</string>
