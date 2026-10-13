@@ -323,8 +323,10 @@ public class MainActivity extends Activity {
         success.addView(check, matchWidth());
 
         TextView status = UiKit.pill(this,
-                getString(ok ? R.string.status_protected
-                        : protectResult == GmsProtector.Result.GMS_MISSING ? R.string.status_unavailable : R.string.status_failed)
+        getString(ok ? R.string.status_protected
+                : protectResult == GmsProtector.Result.GMS_MISSING ? R.string.status_unavailable : R.string.status_failed),
+        ok ? UiKit.SUCCESS_SOFT : UiKit.ERROR_SOFT,
+        ok ? UiKit.SUCCESS : UiKit.ERROR
         );
         LinearLayout.LayoutParams pillLp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         pillLp.gravity = Gravity.CENTER_HORIZONTAL;
