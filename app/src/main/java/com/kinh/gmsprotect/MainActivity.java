@@ -579,10 +579,11 @@ public class MainActivity extends Activity {
         TextView dev = UiKit.muted(this, getString(R.string.developer), 12f);
         dev.setPadding(0, dp(7), 0, 0);
         card.addView(dev);
-        TextView note = UiKit.muted(this, getString(R.string.about_note), 10.8f);
+                        TextView note = UiKit.muted(this, getString(R.string.about_note), 10.8f);
         note.setPadding(0, dp(6), 0, dp(9));
         card.addView(note);
 
+        return card;
     }
 
     private void openWriteSettingsAccess() {
