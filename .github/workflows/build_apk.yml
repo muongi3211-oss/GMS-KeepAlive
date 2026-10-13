@@ -24,7 +24,7 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
         with:
-          gradle-version: '8.5'
+          gradle-version: '8.2'
 
       - name: Build APK
         run: |
@@ -36,12 +36,13 @@ jobs:
           echo "Đã tìm thấy dự án tại thư mục: $PROJECT_DIR"
           cd "$PROJECT_DIR"
           
-          if [ -f "./gradlew" ]; then
-            chmod +x gradlew
-            ./gradlew assembleDebug --stacktrace
-          else
-            gradle assembleDebug --stacktrace
+          # Tự động khởi tạo gradlew nếu chưa có
+          if [ ! -f "./gradlew" ]; then
+            gradle wrapper --gradle-version 8.2
           fi
+          
+          chmod +x gradlew
+          ./gradlew assembleDebug --stacktrace
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
