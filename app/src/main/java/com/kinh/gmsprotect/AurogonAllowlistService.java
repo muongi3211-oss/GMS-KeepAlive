@@ -194,7 +194,7 @@ public class AurogonAllowlistService extends Service {
         Notification.Builder builder = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
                 ? new Notification.Builder(this, CHANNEL_ID)
                 : new Notification.Builder(this);
-        builder.setSmallIcon(R.drawable.ic_launcher_monochrome)
+        .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle(getString(R.string.aurogon_notification_title))
                 .setContentText(getString(R.string.aurogon_notification_text))
                 .setContentIntent(content)
