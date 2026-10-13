@@ -1,9 +1,9 @@
 package com.kinh.gmsprotect;
 
-import com.kinh.gmsprotect.AurogonAllowlistService;
-import com.kinh.gmsprotect.UIKit;
-import com.kinh.gmsprotect.R;
 import com.kinh.gmsprotect.BatterySetupState;
+import com.kinh.gmsprotect.UIKit;
+import com.kinh.gmsprotect.AurogonAllowlistService;
+import com.kinh.gmsprotect.R;
 import com.kinh.gmsprotect.XiaomiSetupState;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -34,16 +34,6 @@ public class MainActivity extends Activity {
     private static final String PREFS = "setup_v1";
     private static final String KEY_SETUP_DONE = "setup_done";
     private static final String KEY_BATTERY_USER_CONFIRMED = "battery_user_confirmed_v1";
-    private static final String KEY_DONATE_START_MS = "donate_start_ms";
-    private static final String KEY_DONATE_LAUNCH_COUNT = "donate_launch_count";
-    private static final String KEY_DONATE_LAST_PROMPT_MS = "donate_last_prompt_ms";
-    private static final String KEY_DONATE_PROMPT_COUNT = "donate_prompt_count";
-
-    private static final long DAY_MS = 24L * 60L * 60L * 1000L;
-    private static final long DONATE_FIRST_DELAY_MS = 7L * DAY_MS;
-    private static final long DONATE_REPEAT_DELAY_MS = 30L * DAY_MS;
-    private static final int DONATE_MIN_LAUNCHES = 3;
-    private static final int DONATE_MAX_AUTO_PROMPTS = 3;
 
     private GmsProtector.Result protectResult = GmsProtector.Result.FAILED;
     private int onboardingStep = 0;
