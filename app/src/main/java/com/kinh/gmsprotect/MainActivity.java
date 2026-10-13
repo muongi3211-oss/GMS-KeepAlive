@@ -502,40 +502,6 @@ public class MainActivity extends Activity {
         return setup;
     }
 
-    private void maybeShowDonatePrompt() {
-        if (donatePromptCheckedThisSession || !isSetupDone() || isFinishing()) return;
-        donatePromptCheckedThisSession = true;
-
-        android.content.SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
-        long now = System.currentTimeMillis();
-        long start = prefs.getLong(KEY_DONATE_START_MS, 0L);
-        int launches = prefs.getInt(KEY_DONATE_LAUNCH_COUNT, 0);
-        long lastPrompt = prefs.getLong(KEY_DONATE_LAST_PROMPT_MS, 0L);
-        int promptCount = prefs.getInt(KEY_DONATE_PROMPT_COUNT, 0);
-
-        if (start == 0L) {
-            prefs.edit().putLong(KEY_DONATE_START_MS, now).apply();
-            return;
-        }
-        if (now - start < DONATE_FIRST_DELAY_MS) return;
-        if (launches < DONATE_MIN_LAUNCHES) return;
-        if (promptCount >= DONATE_MAX_AUTO_PROMPTS) return;
-        if (lastPrompt > 0L && now - lastPrompt < DONATE_REPEAT_DELAY_MS) return;
-
-        long days = Math.max(7L, (now - start) / DAY_MS);
-        prefs.edit()
-                .putLong(KEY_DONATE_LAST_PROMPT_MS, now)
-                .putInt(KEY_DONATE_PROMPT_COUNT, promptCount + 1)
-                .apply();
-
-        new AlertDialog.Builder(this)
-                .setTitle(R.string.donate_reminder_title)
-                .setMessage(getString(R.string.donate_reminder_message, days))
-                .setPositiveButton(R.string.donate_button, (dialog, which) -> showDonateDialog())
-                .setNegativeButton(R.string.donate_later, null)
-                .show();
-    }
-
     private View buildCompatibilityCard() {
         LinearLayout card = UIKit.card(this);
         TextView title = new TextView(this);
