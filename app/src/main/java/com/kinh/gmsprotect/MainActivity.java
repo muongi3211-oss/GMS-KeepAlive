@@ -1,7 +1,7 @@
 package com.kinh.gmsprotect;
 
-import com.kinh.gmsprotect.BatterySetupState;
 import com.kinh.gmsprotect.UIKit;
+import com.kinh.gmsprotect.BatterySetupState;
 import com.kinh.gmsprotect.AurogonAllowlistService;
 import com.kinh.gmsprotect.R;
 import com.kinh.gmsprotect.XiaomiSetupState;
