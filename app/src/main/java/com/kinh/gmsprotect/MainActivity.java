@@ -270,7 +270,7 @@ public class MainActivity extends Activity {
                 }), matchWidthWithBottom(dp(9)));
             }
         } else if (onboardingStep == 1) {
-            card.addView(UIKit.primaryButton(this, getString(R.string.system_access_button), v ->
+            card.addView(UiKit.primaryButton(this, getString(R.string.system_access_button), v ->
                     openWriteSettingsAccess()), matchWidthWithBottom(dp(9)));
         } else {
             boolean ignoringDoze = BatterySetupState.isIgnoringBatteryOptimizations(this);
@@ -283,7 +283,7 @@ public class MainActivity extends Activity {
             card.addView(warning, matchWidthWithBottom(dp(14)));
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !ignoringDoze) {
-                card.addView(UIKit.primaryButton(this, getString(R.string.battery_button),
+                card.addView(UiKit.primaryButton(this, getString(R.string.battery_button),
                         v -> requestAndroidBatteryExemption()), matchWidthWithBottom(dp(9)));
             }
             card.addView(UiKit.secondaryButton(this, getString(R.string.battery_continue), v -> {
@@ -371,8 +371,8 @@ public class MainActivity extends Activity {
                             : writeAllowed
                             ? R.string.gms_no_restrict_missing
                             : R.string.gms_no_restrict_permission_needed),
-                    gmsNoRestrict ? UIKit.SUCCESS_SOFT : UIKit.ERROR_SOFT,
-                    gmsNoRestrict ? UIKit.SUCCESS : UIKit.ERROR
+                    gmsNoRestrict ? UiKit.SUCCESS_SOFT : UiKit.ERROR_SOFT,
+                    gmsNoRestrict ? UiKit.SUCCESS : UIKit.ERROR
             );
             limiterStatus.setGravity(Gravity.START | Gravity.CENTER_VERTICAL);
             LinearLayout.LayoutParams limiterLp = new LinearLayout.LayoutParams(-2, -2);
@@ -380,7 +380,7 @@ public class MainActivity extends Activity {
             limiterLp.bottomMargin = dp(6);
             protectionNotes.addView(limiterStatus, limiterLp);
 
-            TextView greezerStatus = UIKit.pill(this,
+            TextView greezerStatus = UiKit.pill(this,
                     getString(R.string.greezer_protection_active),
                     UiKit.SUCCESS_SOFT,
                     UiKit.SUCCESS
@@ -391,7 +391,7 @@ public class MainActivity extends Activity {
             greezerLp.bottomMargin = dp(6);
             protectionNotes.addView(greezerStatus, greezerLp);
 
-            TextView playStoreStatus = UIKit.pill(this,
+            TextView playStoreStatus = UiKit.pill(this,
                     getString(playStoreNoRestrict
                             ? R.string.play_store_no_restrict_active
                             : writeAllowed
@@ -662,7 +662,7 @@ public class MainActivity extends Activity {
         Toast.makeText(this, value, Toast.LENGTH_SHORT).show();
     }
 
-    private int dp(int value) { return UIKit.dp(this, value); }
+    private int dp(int value) { return UiKit.dp(this, value); }
 
     private LinearLayout.LayoutParams matchWidth() {
         return new LinearLayout.LayoutParams(-1, -2);
