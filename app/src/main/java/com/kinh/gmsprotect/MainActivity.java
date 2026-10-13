@@ -270,17 +270,13 @@ public class MainActivity extends Activity {
         icon.setText(onboardingStep == 0 ? "↻" : onboardingStep == 1 ? "⚙" : "☼");
         card.addView(icon, matchWidthWithBottom(dp(10)));
 
-        TextView title = new TextView(this);
-        title.setGravity(Gravity.CENTER);
-        title.setTextSize(22f);
-        title.setTextColor(UiKit.TEXT);
-        title.setTypeface(title.getTypeface(), Typeface.BOLD);
         if (onboardingStep == 0) {
-    title.setText(R.string.autostart_title);
-} else {
-    title.setText(R.string.system_access_title);
-}
-                : onboardingStep == 1 ? R.string.system_access_title : R.string.battery_title);
+            title.setText(R.string.autostart_title);
+        } else if (onboardingStep == 1) {
+            title.setText(R.string.system_access_title);
+        } else {
+            title.setText(R.string.battery_title);
+        }
         card.addView(title, matchWidthWithBottom(dp(9)));
 
         TextView body = UiKit.muted(this,
