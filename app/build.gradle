@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace 'com.muongi.gmskeepalive'
+    namespace 'com.kinh.gmsprotect'
     compileSdk 34
 
     defaultConfig {
-        applicationId "com.muongi.gmskeepalive"
+        applicationId "com.kinh.gmsprotect"
         minSdk 26
         targetSdk 34
         versionCode 1
