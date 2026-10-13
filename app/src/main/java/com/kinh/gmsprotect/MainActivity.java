@@ -2,7 +2,7 @@ package com.kinh.gmsprotect;
 
 import com.kinh.gmsprotect.R;
 import com.kinh.gmsprotect.BatterySetupState;
-import com.gmsviet.util.XiaomiSetupState;
+import com.kinh.gmsprotect.XiaomiSetupState;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ClipData;
