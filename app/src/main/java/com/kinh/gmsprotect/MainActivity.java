@@ -176,8 +176,8 @@ public class MainActivity extends Activity {
         LinearLayout header = new LinearLayout(this);
         header.setOrientation(LinearLayout.VERTICAL);
         header.setPadding(dp(20), dp(20), dp(20), dp(18));
-        header.setBackground(UIKit.verticalGradient());
-        UIKit.applyTopSystemInset(header);
+        header.setBackground(UiKit.verticalGradient());
+        UiKit.applyTopSystemInset(header);
 
         TextView title = new TextView(this);
         title.setText(R.string.app_name);
@@ -198,7 +198,7 @@ public class MainActivity extends Activity {
     private LinearLayout shell() {
         LinearLayout root = new LinearLayout(this);
         root.setOrientation(LinearLayout.VERTICAL);
-        root.setBackgroundColor(UIKit.BG);
+        root.setBackgroundColor(UiKit.BG);
         root.addView(buildHeader(), matchWidth());
         return root;
     }
@@ -212,7 +212,7 @@ public class MainActivity extends Activity {
         LinearLayout page = new LinearLayout(this);
         page.setOrientation(LinearLayout.VERTICAL);
         page.setPadding(dp(18), dp(22), dp(18), dp(28));
-        UIKit.applyBottomSystemInset(page);
+        UiKit.applyBottomSystemInset(page);
         scroll.addView(page, new ScrollView.LayoutParams(-1, -2));
         root.addView(scroll, new LinearLayout.LayoutParams(-1, 0, 1f));
         setContentView(root);
