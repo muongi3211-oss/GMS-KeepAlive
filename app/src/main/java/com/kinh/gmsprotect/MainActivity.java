@@ -44,8 +44,8 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle state) {
         super.onCreate(state);
-        getWindow().setStatusBarColor(UIKit.PRIMARY_DARK);
-        getWindow().setNavigationBarColor(UIKit.SURFACE);
+        getWindow().setStatusBarColor(UiKit.PRIMARY_DARK);
+        getWindow().setNavigationBarColor(UiKit.SURFACE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
         }
