@@ -217,15 +217,15 @@ public class MainActivity extends Activity {
         root.addView(scroll, new LinearLayout.LayoutParams(-1, 0, 1f));
         setContentView(root);
 
-        TextView stepText = UIKit.muted(this, getString(R.string.step_format, onboardingStep + 1, 3), 12f);
+        TextView stepText = UiKit.muted(this, getString(R.string.step_format, onboardingStep + 1, 3), 12f);
         stepText.setGravity(Gravity.CENTER);
         page.addView(stepText, matchWidthWithBottom(dp(10)));
 
-        LinearLayout card = UIKit.card(this);
+        LinearLayout card = UiKit.card(this);
         TextView icon = new TextView(this);
         icon.setGravity(Gravity.CENTER);
         icon.setTextSize(46f);
-        icon.setTextColor(UIKit.PRIMARY);
+        icon.setTextColor(UiKit.PRIMARY);
         icon.setText(onboardingStep == 0 ? "⚡" : onboardingStep == 1 ? "🔒" : "🔋");
         card.addView(icon, matchWidthWithBottom(dp(10)));
 
@@ -257,13 +257,13 @@ public class MainActivity extends Activity {
 
         if (onboardingStep == 0) {
             XiaomiSetupState.AutostartState state = XiaomiSetupState.getAutostartState(this);
-            card.addView(UIKit.primaryButton(this, getString(R.string.autostart_button), v -> {
+            card.addView(UiKit.primaryButton(this, getString(R.string.autostart_button), v -> {
                 waitingAutostartSettingsReturn = true;
                 openAutostartSettings();
             }), matchWidthWithBottom(dp(9)));
 
             if (state == XiaomiSetupState.AutostartState.UNKNOWN) {
-                card.addView(UIKit.secondaryButton(this, getString(R.string.autostart_manual_continue), v -> {
+                card.addView(UiKit.secondaryButton(this, getString(R.string.autostart_manual_continue), v -> {
                     getSharedPreferences(PREFS, MODE_PRIVATE).edit()
                             .putBoolean("autostart_manual_confirmed", true).apply();
                     continueSetupFlow();
@@ -275,10 +275,10 @@ public class MainActivity extends Activity {
         } else {
             boolean ignoringDoze = BatterySetupState.isIgnoringBatteryOptimizations(this);
             int dozeText = ignoringDoze ? R.string.battery_doze_granted : R.string.battery_doze_missing;
-            TextView doze = UIKit.muted(this, getString(dozeText), 12f);
+            TextView doze = UiKit.muted(this, getString(dozeText), 12f);
             doze.setGravity(Gravity.CENTER);
             card.addView(doze, matchWidthWithBottom(dp(10)));
-            TextView warning = UIKit.muted(this, getString(R.string.battery_hyperos_check_limited), 11f);
+            TextView warning = UiKit.muted(this, getString(R.string.battery_hyperos_check_limited), 11f);
             warning.setGravity(Gravity.CENTER);
             card.addView(warning, matchWidthWithBottom(dp(14)));
 
@@ -286,7 +286,7 @@ public class MainActivity extends Activity {
                 card.addView(UIKit.primaryButton(this, getString(R.string.battery_button),
                         v -> requestAndroidBatteryExemption()), matchWidthWithBottom(dp(9)));
             }
-            card.addView(UIKit.secondaryButton(this, getString(R.string.battery_continue), v -> {
+            card.addView(UiKit.secondaryButton(this, getString(R.string.battery_continue), v -> {
                 getSharedPreferences(PREFS, MODE_PRIVATE).edit()
                         .putBoolean(KEY_BATTERY_USER_CONFIRMED, true).apply();
                 continueSetupFlow();
@@ -304,12 +304,12 @@ public class MainActivity extends Activity {
         LinearLayout page = new LinearLayout(this);
         page.setOrientation(LinearLayout.VERTICAL);
         page.setPadding(dp(16), dp(18), dp(16), dp(28));
-        UIKit.applyBottomSystemInset(page);
+        UiKit.applyBottomSystemInset(page);
         scroll.addView(page, new ScrollView.LayoutParams(-1, -2));
         root.addView(scroll, new LinearLayout.LayoutParams(-1, 0, 1f));
         setContentView(root);
 
-        LinearLayout success = UIKit.card(this);
+        LinearLayout success = UiKit.card(this);
         success.setGravity(Gravity.CENTER_HORIZONTAL);
         success.setPadding(dp(20), dp(25), dp(20), dp(22));
 
@@ -319,10 +319,10 @@ public class MainActivity extends Activity {
         check.setTextSize(76f);
         check.setGravity(Gravity.CENTER);
         check.setTypeface(check.getTypeface(), Typeface.BOLD);
-        check.setTextColor(ok ? UIKit.SUCCESS : UIKit.ERROR);
+        check.setTextColor(ok ? UiKit.SUCCESS : UIKit.ERROR);
         success.addView(check, matchWidth());
 
-        TextView status = UIKit.pill(this,
+        TextView status = UiKit.pill(this,
                 getString(ok ? R.string.status_protected
                         : protectResult == GmsProtector.Result.GMS_MISSING ? R.string.status_unavailable : R.string.status_failed)
         );
@@ -342,18 +342,18 @@ public class MainActivity extends Activity {
             }
         }
         title.setTextSize(ok ? 23f : 19f);
-        title.setTextColor(UIKit.TEXT);
+        title.setTextColor(UiKit.TEXT);
         title.setTypeface(title.getTypeface(), Typeface.BOLD);
         title.setGravity(Gravity.CENTER);
         success.addView(title, matchWidthWithBottom(dp(9)));
 
         if (ok) {
-            TextView body = UIKit.muted(this, getString(R.string.success_body), 13f);
+            TextView body = UiKit.muted(this, getString(R.string.success_body), 13f);
             body.setGravity(Gravity.CENTER);
             body.setLineSpacing(0f, 1.2f);
             success.addView(body, matchWidthWithBottom(dp(9)));
 
-            TextView detail = UIKit.muted(this, getString(R.string.success_detail), 11.5f);
+            TextView detail = UiKit.muted(this, getString(R.string.success_detail), 11.5f);
             detail.setGravity(Gravity.CENTER);
             success.addView(detail, matchWidthWithBottom(dp(10)));
 
@@ -365,7 +365,7 @@ public class MainActivity extends Activity {
             protectionNotes.setOrientation(LinearLayout.VERTICAL);
             protectionNotes.setGravity(Gravity.START);
 
-            TextView limiterStatus = UIKit.pill(this,
+            TextView limiterStatus = UiKit.pill(this,
                     getString(gmsNoRestrict
                             ? R.string.gms_no_restrict_active
                             : writeAllowed
@@ -382,8 +382,8 @@ public class MainActivity extends Activity {
 
             TextView greezerStatus = UIKit.pill(this,
                     getString(R.string.greezer_protection_active),
-                    UIKit.SUCCESS_SOFT,
-                    UIKit.SUCCESS
+                    UiKit.SUCCESS_SOFT,
+                    UiKit.SUCCESS
             );
             greezerStatus.setGravity(Gravity.START | Gravity.CENTER_VERTICAL);
             LinearLayout.LayoutParams greezerLp = new LinearLayout.LayoutParams(-2, -2);
@@ -397,8 +397,8 @@ public class MainActivity extends Activity {
                             : writeAllowed
                             ? R.string.play_store_no_restrict_missing
                             : R.string.play_store_no_restrict_permission_needed),
-                    playStoreNoRestrict ? UIKit.SUCCESS_SOFT : UIKit.ERROR_SOFT,
-                    playStoreNoRestrict ? UIKit.SUCCESS : UIKit.ERROR
+                    playStoreNoRestrict ? UiKit.SUCCESS_SOFT : UiKit.ERROR_SOFT,
+                    playStoreNoRestrict ? UiKit.SUCCESS : UiKit.ERROR
             );
             playStoreStatus.setGravity(Gravity.START | Gravity.CENTER_VERTICAL);
             LinearLayout.LayoutParams playStoreLp = new LinearLayout.LayoutParams(-2, -2);
@@ -409,7 +409,7 @@ public class MainActivity extends Activity {
             notesLp.gravity = Gravity.START;
             success.addView(protectionNotes, notesLp);
         } else {
-            success.addView(UIKit.primaryButton(this, getString(R.string.retry), v -> {
+            success.addView(UiKit.primaryButton(this, getString(R.string.retry), v -> {
                 protectResult = GmsProtector.protect(this);
                 showMainScreen();
             }), matchWidthWithTop(dp(14)));
@@ -441,30 +441,30 @@ public class MainActivity extends Activity {
             return null;
         }
 
-        LinearLayout setup = UIKit.card(this);
+        LinearLayout setup = UiKit.card(this);
         TextView setupTitle = new TextView(this);
         setupTitle.setText(R.string.setup);
         setupTitle.setTextSize(15f);
-        setupTitle.setTextColor(UIKit.TEXT);
+        setupTitle.setTextColor(UiKit.TEXT);
         setupTitle.setTypeface(setupTitle.getTypeface(), Typeface.BOLD);
         setup.addView(setupTitle, matchWidthWithBottom(dp(8)));
 
         if (autostartMissing) {
-            TextView line = UIKit.muted(this, getString(R.string.autostart_setup_missing), 11.5f);
+            TextView line = UiKit.muted(this, getString(R.string.autostart_setup_missing), 11.5f);
             setup.addView(line, matchWidthWithBottom(dp(8)));
-            setup.addView(UIKit.primaryButton(this, getString(R.string.autostart_button), v -> {
+            setup.addView(UiKit.primaryButton(this, getString(R.string.autostart_button), v -> {
                 waitingAutostartSettingsReturn = true;
                 openAutostartSettings();
             }), matchWidthWithBottom(dp(9)));
         }
 
         if (writeMissing) {
-            TextView line = UIKit.muted(this, getString(R.string.system_access_setup_line), 11.5f);
+            TextView line = UiKit.muted(this, getString(R.string.system_access_setup_line), 11.5f);
             setup.addView(line, matchWidthWithBottom(dp(8)));
-            setup.addView(UIKit.primaryButton(this, getString(R.string.system_access_button), v ->
+            setup.addView(UiKit.primaryButton(this, getString(R.string.system_access_button), v ->
                     openWriteSettingsAccess()), matchWidthWithBottom(dp(9)));
         } else if (milletMissing) {
-            setup.addView(UIKit.primaryButton(this, getString(R.string.system_access_apply_now), v -> {
+            setup.addView(UiKit.primaryButton(this, getString(R.string.system_access_apply_now), v -> {
                 WilletNoRestrict.Result result = WilletNoRestrict.ensureGms(this);
                 protectResult = GmsProtector.protect(this);
                 toast(getString(result == WilletNoRestrict.Result.ADDED
@@ -475,38 +475,38 @@ public class MainActivity extends Activity {
         }
 
         if (batteryPending) {
-            TextView line = UIKit.muted(this, getString(R.string.battery_setup_missing), 11.5f);
+            TextView line = UiKit.muted(this, getString(R.string.battery_setup_missing), 11.5f);
             setup.addView(line, matchWidthWithBottom(dp(8)));
-            setup.addView(UIKit.secondaryButton(this, getString(R.string.battery_review),
+            setup.addView(UiKit.secondaryButton(this, getString(R.string.battery_review),
                     v -> showOnboarding(2)), matchWidthWithBottom(dp(9)));
         }
         return setup;
     }
 
     private View buildCompatibilityCard() {
-        LinearLayout card = UIKit.card(this);
+        LinearLayout card = UiKit.card(this);
         TextView title = new TextView(this);
         title.setText(R.string.compat_title);
         title.setTextSize(15f);
-        title.setTextColor(UIKit.TEXT);
+        title.setTextColor(UiKit.TEXT);
         title.setTypeface(title.getTypeface(), Typeface.BOLD);
         card.addView(title, matchWidthWithBottom(dp(6)));
 
-        TextView desc = UIKit.muted(this, getString(R.string.compat_card_desc), 11f);
+        TextView desc = UiKit.muted(this, getString(R.string.compat_card_desc), 11f);
         desc.setLineSpacing(0f, 1.15f);
         card.addView(desc, matchWidthWithBottom(dp(11)));
 
-        card.addView(UIKit.secondaryButton(this, getString(R.string.compat_open), v ->
+        card.addView(UiKit.secondaryButton(this, getString(R.string.compat_open), v ->
                 startActivity(new Intent(this, CompatibilityActivity.class))), matchWidth());
         return card;
     }
 
     private View buildAdvancedCard() {
-        LinearLayout card = UIKit.card(this);
+        LinearLayout card = UiKit.card(this);
         TextView title = new TextView(this);
         title.setText(R.string.advanced);
         title.setTextSize(15f);
-        title.setTextColor(UIKit.TEXT);
+        title.setTextColor(UiKit.TEXT);
         title.setTypeface(title.getTypeface(), Typeface.BOLD);
         card.addView(title, matchWidthWithBottom(dp(10)));
 
@@ -520,11 +520,11 @@ public class MainActivity extends Activity {
         TextView itemTitle = new TextView(this);
         itemTitle.setText(R.string.aurogan_allowlist_title);
         itemTitle.setTextSize(13.5f);
-        itemTitle.setTextColor(UIKit.TEXT);
+        itemTitle.setTextColor(UiKit.TEXT);
         itemTitle.setTypeface(itemTitle.getTypeface(), Typeface.BOLD);
         texts.addView(itemTitle, matchWidth());
 
-        TextView desc = UIKit.muted(this, getString(R.string.aurogan_allowlist_desc), 11f);
+        TextView desc = UiKit.muted(this, getString(R.string.aurogan_allowlist_desc), 11f);
         desc.setLineSpacing(0f, 1.15f);
         desc.setPadding(0, dp(4), dp(10), 0);
         texts.addView(desc, matchWidth());
@@ -547,35 +547,35 @@ public class MainActivity extends Activity {
 
         card.addView(row, matchWidth());
 
-        TextView timing = UIKit.muted(this, getString(R.string.aurogan_allowlist_timing), 10.5f);
+        TextView timing = UiKit.muted(this, getString(R.string.aurogan_allowlist_timing), 10.5f);
         timing.setPadding(0, dp(10), 0, 0);
         card.addView(timing, matchWidthWithBottom(dp(12)));
 
-        TextView batteryStatus = UIKit.muted(this,
+        TextView batteryStatus = UiKit.muted(this,
                 getString(BatterySetupState.isIgnoringBatteryOptimizations(this)
                         ? R.string.battery_doze_granted : R.string.battery_doze_missing), 11f);
         card.addView(batteryStatus, matchWidthWithBottom(dp(7)));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
                 && !BatterySetupState.isIgnoringBatteryOptimizations(this)) {
-            card.addView(UIKit.secondaryButton(this, getString(R.string.battery_button),
+            card.addView(UiKit.secondaryButton(this, getString(R.string.battery_button),
                     v -> requestAndroidBatteryExemption()), matchWidthWithBottom(dp(9)));
         }
         return card;
     }
 
     private View buildAppInfoCard() {
-        LinearLayout card = UIKit.card(this);
+        LinearLayout card = UiKit.card(this);
         TextView title = new TextView(this);
         title.setText(R.string.app_info);
         title.setTextSize(15f);
-        title.setTextColor(UIKit.TEXT);
+        title.setTextColor(UiKit.TEXT);
         title.setTypeface(title.getTypeface(), Typeface.BOLD);
         card.addView(title);
 
-        TextView dev = UIKit.muted(this, getString(R.string.developer), 12f);
+        TextView dev = UiKit.muted(this, getString(R.string.developer), 12f);
         dev.setPadding(0, dp(7), 0, 0);
         card.addView(dev);
-        TextView note = UIKit.muted(this, getString(R.string.about_note), 10.8f);
+        TextView note = UiKit.muted(this, getString(R.string.about_note), 10.8f);
         note.setPadding(0, dp(6), 0, dp(9));
         card.addView(note);
 
