@@ -417,7 +417,6 @@ public class MainActivity extends Activity {
         page.addView(success, cardMargin());
 
         page.addView(buildAdvancedCard(), cardMargin());
-        page.addView(buildDonateCard(), cardMargin());
         page.addView(buildCompatibilityCard(), cardMargin());
 
         View setupCard = buildSetupCardIfNeeded();
@@ -425,7 +424,6 @@ public class MainActivity extends Activity {
             page.addView(setupCard, cardMargin());
         }
         page.addView(buildAppInfoCard(), cardMargin());
-        page.post(this::maybeShowDonatePrompt);
     }    private View buildSetupCardIfNeeded() {
         XiaomiSetupState.AutostartState autostart = XiaomiSetupState.getAutostartState(this);
         boolean writeAllowed = WilletNoRestrict.canWrite(this);
