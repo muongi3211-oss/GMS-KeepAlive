@@ -565,34 +565,6 @@ public class MainActivity extends Activity {
         return card;
     }
 
-    private View buildDonateCard() {
-        LinearLayout card = UIKit.card(this);
-        LinearLayout row = new LinearLayout(this);
-        row.setOrientation(LinearLayout.HORIZONTAL);
-        row.setGravity(Gravity.CENTER_VERTICAL);
-
-        LinearLayout texts = new LinearLayout(this);
-        texts.setOrientation(LinearLayout.VERTICAL);
-        TextView title = new TextView(this);
-        title.setText(R.string.donate_title);
-        title.setTextSize(15f);
-        title.setTextColor(UIKit.TEXT);
-        title.setTypeface(title.getTypeface(), Typeface.BOLD);
-        title.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_donate_heart, 0, 0, 0);
-        title.setCompoundDrawablePadding(dp(5));
-        texts.addView(title);
-
-        TextView desc = UIKit.muted(this, getString(R.string.donate_desc), 11f);
-        desc.setPadding(0, dp(4), dp(8), 0);
-        texts.addView(desc);
-
-        row.addView(texts, new LinearLayout.LayoutParams(0, -2, 1f));
-        row.addView(UIKit.secondaryButton(this, getString(R.string.donate_button), v ->
-                showDonateDialog()), new LinearLayout.LayoutParams(dp(90), dp(46)));
-        card.addView(row);
-        return card;
-    }
-
     private View buildAdvancedCard() {
         LinearLayout card = UIKit.card(this);
         TextView title = new TextView(this);
