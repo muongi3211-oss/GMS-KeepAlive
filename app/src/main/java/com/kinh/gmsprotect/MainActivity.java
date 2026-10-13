@@ -730,7 +730,7 @@ public class MainActivity extends Activity {
         LinearLayout box = new LinearLayout(this);
         box.setOrientation(LinearLayout.VERTICAL);
         box.setPadding(dp(11), dp(9), dp(9), dp(9));
-        box.setBackground(UIKit.rounded(0xFFFB7F7FF, 12, this, UIKit.BORDER));
+        box.setBackground(UIKit.rounded(0xFFFB7F7F, 12, this, UIKit.BORDER));
 
         TextView label = new TextView(this);
         label.setText(network);
