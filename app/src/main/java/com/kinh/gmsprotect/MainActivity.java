@@ -55,6 +55,7 @@ public class MainActivity extends Activity {
         protectResult = GmsProtector.protect(this);
         AurogonAllowlistService.startIfEnabled(this);
         WilletWatchScheduler.schedule(this);
+        continueSetupFlow();
 
     }
 
