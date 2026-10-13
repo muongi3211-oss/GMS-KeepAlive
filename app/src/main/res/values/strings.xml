@@ -125,9 +125,6 @@
     <string name="battery_request_unavailable">Android battery exemption dialog is unavailable on this device.</string>
     <string name="battery_setup_missing">Review GMS Protect battery policy. Confirm No restrictions in HyperOS; Android exemption is checked separately.</string>
     <string name="compat_android_battery_exemption">Android battery exemption</string>
-    <string name="aurogan_notification_channel">Aurogon Allowlist</string>
-    <string name="aurogan_notification_channel_desc">Theo dõi trạng thái màn hình để duy trì Aurogon Allowlist cho GMS.</string>
-    <string name="autostart_not_enabled">Tự khởi động vẫn chưa được bật.</string>
-    <string name="system_access_not_granted">Quyền Sửa đổi cài đặt hệ thống chưa được bật.</string>
+
     
 </resources>
