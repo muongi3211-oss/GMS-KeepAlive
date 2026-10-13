@@ -1,5 +1,8 @@
 package com.kinh.gmsprotect;
 
+// Thêm các dòng import này ở đầu tệp nếu chưa có:
+import com.kinh.gmsprotect.AurogonAllowlistService;
+import com.kinh.gmsprotect.UIKit;
 import com.kinh.gmsprotect.R;
 import com.kinh.gmsprotect.BatterySetupState;
 import com.kinh.gmsprotect.XiaomiSetupState;
