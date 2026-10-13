@@ -40,7 +40,6 @@ public class MainActivity extends Activity {
     private boolean waitingAutostartSettingsReturn = false;
     private boolean waitingWriteSettingsReturn = false;
     private boolean waitingBatterySettingsReturn = false;
-    private boolean donatePromptCheckedThisSession = false;
 
     @Override
     protected void onCreate(Bundle state) {
