@@ -658,14 +658,6 @@ public class MainActivity extends Activity {
         }
     }
 
-    private void openFacebookProfile() {
-        try {
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/mrhankytb")));
-        } catch (Throwable t) {
-            toast(getString(R.string.facebook_failed));
-        }
-    }
-
     private void toast(String value) {
         Toast.makeText(this, value, Toast.LENGTH_SHORT).show();
     }
