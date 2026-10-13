@@ -232,7 +232,7 @@ public class MainActivity extends Activity {
         TextView title = new TextView(this);
         title.setGravity(Gravity.CENTER);
         title.setTextSize(22f);
-        title.setTextColor(UIKit.TEXT);
+        title.setTextColor(UiKit.TEXT);
         title.setTypeface(title.getTypeface(), Typeface.BOLD);
         if (onboardingStep == 0) {
             title.setText(R.string.autostart_title);
@@ -319,7 +319,7 @@ public class MainActivity extends Activity {
         check.setTextSize(76f);
         check.setGravity(Gravity.CENTER);
         check.setTypeface(check.getTypeface(), Typeface.BOLD);
-        check.setTextColor(ok ? UiKit.SUCCESS : UIKit.ERROR);
+        check.setTextColor(ok ? UiKit.SUCCESS : UiKit.ERROR);
         success.addView(check, matchWidth());
 
         TextView status = UiKit.pill(this,
@@ -372,7 +372,7 @@ public class MainActivity extends Activity {
                             ? R.string.gms_no_restrict_missing
                             : R.string.gms_no_restrict_permission_needed),
                     gmsNoRestrict ? UiKit.SUCCESS_SOFT : UiKit.ERROR_SOFT,
-                    gmsNoRestrict ? UiKit.SUCCESS : UIKit.ERROR
+                    gmsNoRestrict ? UiKit.SUCCESS : UiKit.ERROR
             );
             limiterStatus.setGravity(Gravity.START | Gravity.CENTER_VERTICAL);
             LinearLayout.LayoutParams limiterLp = new LinearLayout.LayoutParams(-2, -2);
