@@ -169,17 +169,7 @@ public class MainActivity extends Activity {
     private void setSetupDone(boolean done) {
         android.content.SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
         android.content.SharedPreferences.Editor editor = prefs.edit().putBoolean(KEY_SETUP_DONE, done);
-        if (done && prefs.getLong(KEY_DONATE_START_MS, 0L) == 0L) {
-            editor.putLong(KEY_DONATE_START_MS, System.currentTimeMillis());
-            editor.putInt(KEY_DONATE_LAUNCH_COUNT, Math.max(1, prefs.getInt(KEY_DONATE_LAUNCH_COUNT, 0)));
-        }
         editor.apply();
-    }
-
-    private void recordReturningLaunchForDonate() {
-        android.content.SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
-        int launches = prefs.getInt(KEY_DONATE_LAUNCH_COUNT, 0);
-        prefs.edit().putInt(KEY_DONATE_LAUNCH_COUNT, launches + 1).apply();
     }
 
     private View buildHeader() {
