@@ -1,4 +1,4 @@
-package com.hanh.gmsprotect;
+package com.kinh.gmsprotect;
 
 import android.app.ActivityManager;
 import android.content.Context;
