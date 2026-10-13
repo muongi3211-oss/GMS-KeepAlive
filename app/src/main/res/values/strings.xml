@@ -29,7 +29,7 @@
     <string name="setup">Setup</string>
     <string name="setup_again">Review setup</string>
 
-    <!-- Donate & App Info Strings (Bổ sung đầy đủ để khớp với MainActivity) -->
+    <!-- Donate & App Info Strings -->
     <string name="donate_title">Support GMS Protect</string>
     <string name="donate_desc">Help keep this open-source utility maintained and updated for new HyperOS versions.</string>
     <string name="donate_button">Donate</string>
@@ -71,7 +71,7 @@
     <string name="advanced">Advanced</string>
     <string name="aurogon_allowlist_title">Aurogon Allowlist</string>
     <string name="aurogon_allowlist_desc">Optional protection for China HyperOS builds. When enabled, GMS Protect keeps a lightweight background monitor that restores Google Play services to the Aurogon allowlist after screen-off policy changes.</string>
-    <string name="aurogon_allowlist_timing">Background timing: 40 seconds after screen off → at 2 minutes → every 10 minutes while the screen stays off. One final refresh runs when the screen turns on, then the schedule stops.</string>
+    <string name="aurogon_allowlist_timing">Background timing: 40 seconds after screen off -> at 2 minutes -> every 10 minutes while the screen stays off. One final refresh runs when the screen turns on, then the schedule stops.</string>
     <string name="aurogon_allowlist_enabled">Aurogon Allowlist background protection enabled.</string>
     <string name="aurogon_allowlist_disabled">Aurogon Allowlist background protection disabled.</string>
     <string name="aurogon_allowlist_failed">Unable to change Aurogon Allowlist mode.</string>
@@ -126,7 +126,7 @@
     <string name="compat_result_reverify">SYSTEM UPDATED • REVERIFYING</string>
     <string name="compat_result_partial">PARTIALLY COMPATIBLE / SETUP INCOMPLETE</string>
     <string name="compat_result_unsupported">NOT COMPATIBLE</string>
-    <string name="compat_passive_note">The strongest checks are passive. “System wake-up” is verified only after JobScheduler really starts GMS Protect because the HyperOS MILLET setting changed. “Automatic GMS repair” is verified only after GMS was actually missing and the app restored it successfully.</string>
+    <string name="compat_passive_note">The strongest checks are passive. System wake-up is verified only after JobScheduler really starts GMS Protect because the HyperOS MILLET setting changed. Automatic GMS repair is verified only after GMS was actually missing and the app restored it successfully.</string>
     <string name="compat_run_check">Run current-state check</string>
     <string name="compat_check_done">Current state checked. Passive self-repair verification will update automatically when it happens.</string>
     <string name="compat_back">Back</string>
