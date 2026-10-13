@@ -273,7 +273,11 @@ public class MainActivity extends Activity {
         title.setTextSize(22f);
         title.setTextColor(UiKit.TEXT);
         title.setTypeface(title.getTypeface(), Typeface.BOLD);
-        title.setText(onboardingStep == 0 ? R.string.autostart_title
+        if (onboardingStep == 0) {
+    title.setText(R.string.autostart_title);
+} else {
+    title.setText(R.string.system_access_title);
+}
                 : onboardingStep == 1 ? R.string.system_access_title : R.string.battery_title);
         card.addView(title, matchWidthWithBottom(dp(9)));
 
@@ -371,7 +375,11 @@ public class MainActivity extends Activity {
         success.addView(status, pillLp);
 
         TextView title = new TextView(this);
-        title.setText(ok ? R.string.success_title
+if (onboardingStep == 0) {
+    title.setText(R.string.autostart_title);
+} else {
+    title.setText(R.string.system_access_title);
+}
                 : protectResult == GmsProtector.Result.GMS_MISSING ? R.string.gms_missing : R.string.protect_failed);
         title.setTextSize(ok ? 23f : 19f);
         title.setTextColor(UiKit.TEXT);
