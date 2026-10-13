@@ -367,7 +367,7 @@ public class MainActivity extends Activity {
             }
         }
         title.setTextSize(ok ? 23f : 19f);
-        title.setTextColor(UiKit.TEXT);
+        title.setTextColor(UIKit.TEXT);
         title.setTypeface(title.getTypeface(), Typeface.BOLD);
         title.setGravity(Gravity.CENTER);
         success.addView(title, matchWidthWithBottom(dp(9)));
@@ -451,9 +451,7 @@ public class MainActivity extends Activity {
         }
         page.addView(buildAppInfoCard(), cardMargin());
         page.post(this::maybeShowDonatePrompt);
-    }
-
-    private View buildSetupCardIfNeeded() {
+    }    private View buildSetupCardIfNeeded() {
         XiaomiSetupState.AutostartState autostart = XiaomiSetupState.getAutostartState(this);
         boolean writeAllowed = WilletNoRestrict.canWrite(this);
         boolean gmsOk = WilletNoRestrict.containsGms(this);
@@ -475,4 +473,407 @@ public class MainActivity extends Activity {
         setupTitle.setText(R.string.setup);
         setupTitle.setTextSize(15f);
         setupTitle.setTextColor(UIKit.TEXT);
-        setupTitle.setTypeface(setupTitle.getTypeface(), Typefac
+        setupTitle.setTypeface(setupTitle.getTypeface(), Typeface.BOLD);
+        setup.addView(setupTitle, matchWidthWithBottom(dp(8)));
+
+        if (autostartMissing) {
+            TextView line = UIKit.muted(this, getString(R.string.autostart_setup_missing), 11.5f);
+            setup.addView(line, matchWidthWithBottom(dp(8)));
+            setup.addView(UIKit.primaryButton(this, getString(R.string.autostart_button), v -> {
+                waitingAutostartSettingsReturn = true;
+                openAutostartSettings();
+            }), matchWidthWithBottom(dp(9)));
+        }
+
+        if (writeMissing) {
+            TextView line = UIKit.muted(this, getString(R.string.system_access_setup_line), 11.5f);
+            setup.addView(line, matchWidthWithBottom(dp(8)));
+            setup.addView(UIKit.primaryButton(this, getString(R.string.system_access_button), v ->
+                    openWriteSettingsAccess()), matchWidthWithBottom(dp(9)));
+        } else if (milletMissing) {
+            setup.addView(UIKit.primaryButton(this, getString(R.string.system_access_apply_now), v -> {
+                WilletNoRestrict.Result result = WilletNoRestrict.ensureGms(this);
+                protectResult = GmsProtector.protect(this);
+                toast(getString(result == WilletNoRestrict.Result.ADDED
+                        ? R.string.system_access_applied
+                        : R.string.system_access_apply_failed));
+                showMainScreen();
+            }), matchWidthWithBottom(dp(9)));
+        }
+
+        if (batteryPending) {
+            TextView line = UIKit.muted(this, getString(R.string.battery_setup_missing), 11.5f);
+            setup.addView(line, matchWidthWithBottom(dp(8)));
+            setup.addView(UIKit.secondaryButton(this, getString(R.string.battery_review),
+                    v -> showOnboarding(2)), matchWidthWithBottom(dp(9)));
+        }
+        return setup;
+    }
+
+    private void maybeShowDonatePrompt() {
+        if (donatePromptCheckedThisSession || !isSetupDone() || isFinishing()) return;
+        donatePromptCheckedThisSession = true;
+
+        android.content.SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
+        long now = System.currentTimeMillis();
+        long start = prefs.getLong(KEY_DONATE_START_MS, 0L);
+        int launches = prefs.getInt(KEY_DONATE_LAUNCH_COUNT, 0);
+        long lastPrompt = prefs.getLong(KEY_DONATE_LAST_PROMPT_MS, 0L);
+        int promptCount = prefs.getInt(KEY_DONATE_PROMPT_COUNT, 0);
+
+        if (start == 0L) {
+            prefs.edit().putLong(KEY_DONATE_START_MS, now).apply();
+            return;
+        }
+        if (now - start < DONATE_FIRST_DELAY_MS) return;
+        if (launches < DONATE_MIN_LAUNCHES) return;
+        if (promptCount >= DONATE_MAX_AUTO_PROMPTS) return;
+        if (lastPrompt > 0L && now - lastPrompt < DONATE_REPEAT_DELAY_MS) return;
+
+        long days = Math.max(7L, (now - start) / DAY_MS);
+        prefs.edit()
+                .putLong(KEY_DONATE_LAST_PROMPT_MS, now)
+                .putInt(KEY_DONATE_PROMPT_COUNT, promptCount + 1)
+                .apply();
+
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.donate_reminder_title)
+                .setMessage(getString(R.string.donate_reminder_message, days))
+                .setPositiveButton(R.string.donate_button, (dialog, which) -> showDonateDialog())
+                .setNegativeButton(R.string.donate_later, null)
+                .show();
+    }
+
+    private View buildCompatibilityCard() {
+        LinearLayout card = UIKit.card(this);
+        TextView title = new TextView(this);
+        title.setText(R.string.compat_title);
+        title.setTextSize(15f);
+        title.setTextColor(UIKit.TEXT);
+        title.setTypeface(title.getTypeface(), Typeface.BOLD);
+        card.addView(title, matchWidthWithBottom(dp(6)));
+
+        TextView desc = UIKit.muted(this, getString(R.string.compat_card_desc), 11f);
+        desc.setLineSpacing(0f, 1.15f);
+        card.addView(desc, matchWidthWithBottom(dp(11)));
+
+        card.addView(UIKit.secondaryButton(this, getString(R.string.compat_open), v ->
+                startActivity(new Intent(this, CompatibilityActivity.class))), matchWidth());
+        return card;
+    }
+
+    private View buildDonateCard() {
+        LinearLayout card = UIKit.card(this);
+        LinearLayout row = new LinearLayout(this);
+        row.setOrientation(LinearLayout.HORIZONTAL);
+        row.setGravity(Gravity.CENTER_VERTICAL);
+
+        LinearLayout texts = new LinearLayout(this);
+        texts.setOrientation(LinearLayout.VERTICAL);
+        TextView title = new TextView(this);
+        title.setText(R.string.donate_title);
+        title.setTextSize(15f);
+        title.setTextColor(UIKit.TEXT);
+        title.setTypeface(title.getTypeface(), Typeface.BOLD);
+        title.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_donate_heart, 0, 0, 0);
+        title.setCompoundDrawablePadding(dp(5));
+        texts.addView(title);
+
+        TextView desc = UIKit.muted(this, getString(R.string.donate_desc), 11f);
+        desc.setPadding(0, dp(4), dp(8), 0);
+        texts.addView(desc);
+
+        row.addView(texts, new LinearLayout.LayoutParams(0, -2, 1f));
+        row.addView(UIKit.secondaryButton(this, getString(R.string.donate_button), v ->
+                showDonateDialog()), new LinearLayout.LayoutParams(dp(90), dp(46)));
+        card.addView(row);
+        return card;
+    }
+
+    private View buildAdvancedCard() {
+        LinearLayout card = UIKit.card(this);
+        TextView title = new TextView(this);
+        title.setText(R.string.advanced);
+        title.setTextSize(15f);
+        title.setTextColor(UIKit.TEXT);
+        title.setTypeface(title.getTypeface(), Typeface.BOLD);
+        card.addView(title, matchWidthWithBottom(dp(10)));
+
+        LinearLayout row = new LinearLayout(this);
+        row.setOrientation(LinearLayout.HORIZONTAL);
+        row.setGravity(Gravity.CENTER_VERTICAL);
+
+        LinearLayout texts = new LinearLayout(this);
+        texts.setOrientation(LinearLayout.VERTICAL);
+
+        TextView itemTitle = new TextView(this);
+        itemTitle.setText(R.string.aurogan_allowlist_title);
+        itemTitle.setTextSize(13.5f);
+        itemTitle.setTextColor(UIKit.TEXT);
+        itemTitle.setTypeface(itemTitle.getTypeface(), Typeface.BOLD);
+        texts.addView(itemTitle, matchWidth());
+
+        TextView desc = UIKit.muted(this, getString(R.string.aurogan_allowlist_desc), 11f);
+        desc.setLineSpacing(0f, 1.15f);
+        desc.setPadding(0, dp(4), dp(10), 0);
+        texts.addView(desc, matchWidth());
+
+        row.addView(texts, new LinearLayout.LayoutParams(0, -2, 1f));
+
+        Switch toggle = new Switch(this);
+        toggle.setChecked(AuroganAllowlistService.isEnabled(this));
+        toggle.setContentDescription(getString(R.string.aurogan_allowlist_title));
+        toggle.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            boolean applied = AuroganAllowlistService.setEnabled(this, isChecked);
+            if (!applied) {
+                toast(getString(R.string.aurogan_allowlist_failed));
+                showMainScreen();
+                return;
+            }
+            toast(getString(isChecked ? R.string.aurogan_allowlist_enabled : R.string.aurogan_allowlist_disabled));
+        });
+        row.addView(toggle, new LinearLayout.LayoutParams(-2, -2));
+
+        card.addView(row, matchWidth());
+
+        TextView timing = UIKit.muted(this, getString(R.string.aurogan_allowlist_timing), 10.5f);
+        timing.setPadding(0, dp(10), 0, 0);
+        card.addView(timing, matchWidthWithBottom(dp(12)));
+
+        TextView batteryStatus = UIKit.muted(this,
+                getString(BatterySetupState.isIgnoringBatteryOptimizations(this)
+                        ? R.string.battery_doze_granted : R.string.battery_doze_missing), 11f);
+        card.addView(batteryStatus, matchWidthWithBottom(dp(7)));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+                && !BatterySetupState.isIgnoringBatteryOptimizations(this)) {
+            card.addView(UIKit.secondaryButton(this, getString(R.string.battery_button),
+                    v -> requestAndroidBatteryExemption()), matchWidthWithBottom(dp(9)));
+        }
+        return card;
+    }
+
+    private View buildAppInfoCard() {
+        LinearLayout card = UIKit.card(this);
+        TextView title = new TextView(this);
+        title.setText(R.string.app_info);
+        title.setTextSize(15f);
+        title.setTextColor(UIKit.TEXT);
+        title.setTypeface(title.getTypeface(), Typeface.BOLD);
+        card.addView(title);
+
+        TextView dev = UIKit.muted(this, getString(R.string.developer), 12f);
+        dev.setPadding(0, dp(7), 0, 0);
+        card.addView(dev);
+        TextView note = UIKit.muted(this, getString(R.string.about_note), 10.8f);
+        note.setPadding(0, dp(6), 0, dp(9));
+        card.addView(note);
+
+        Button fb = UIKit.secondaryButton(this, getString(R.string.facebook), v -> openFacebookProfile());
+        fb.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_facebook, 0, 0, 0);
+        fb.setCompoundDrawablePadding(dp(7));
+        card.addView(fb, matchWidth());
+        return card;
+    }
+
+    private void showDonateDialog() {
+        final String usdtEvm = "0x4cc35bE54c358146e7b71E58F98553219384FDDc";
+        final String usdtTrc20 = "TD8HqMy5cGQU3tFf7q7AweqrAWs1e9Rm";
+
+        LinearLayout content = new LinearLayout(this);
+        content.setOrientation(LinearLayout.VERTICAL);
+        content.setGravity(Gravity.CENTER_HORIZONTAL);
+        content.setPadding(dp(22), dp(10), dp(22), dp(12));
+
+        TextView thanks = new TextView(this);
+        thanks.setText(R.string.donate_thanks);
+        thanks.setTextSize(14f);
+        thanks.setTextColor(UIKit.TEXT);
+        thanks.setGravity(Gravity.CENTER);
+        content.addView(thanks, matchWidthWithBottom(dp(14)));
+
+        ImageView qr = new ImageView(this);
+        qr.setImageResource(R.drawable.donate_qr);
+        qr.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        qr.setAdjustViewBounds(true);
+        qr.setBackground(UIKit.rounded(Color.WHITE, 16, this));
+        qr.setPadding(dp(10), dp(10), dp(10), dp(10));
+        content.addView(qr, new LinearLayout.LayoutParams(dp(240), dp(240)));
+
+        TextView hint = UIKit.muted(this, getString(R.string.donate_qr_hint), 12f);
+        hint.setGravity(Gravity.CENTER);
+        hint.setPadding(0, dp(12), 0, dp(12));
+        content.addView(hint, matchWidthWithBottom(dp(12)));
+
+        TextView cryptoTitle = new TextView(this);
+        cryptoTitle.setText(R.string.donate_usdt);
+        cryptoTitle.setTextSize(13f);
+        cryptoTitle.setTextColor(UIKit.TEXT);
+        cryptoTitle.setTypeface(cryptoTitle.getTypeface(), Typeface.BOLD);
+        content.addView(cryptoTitle, matchWidth());
+        content.addView(buildCryptoAddressRow("USDT - EVM", usdtEvm), matchWidthWithTop(dp(8)));
+        content.addView(buildCryptoAddressRow("USDT - TRC20", usdtTrc20), matchWidthWithTop(dp(8)));
+
+        TextView warning = UIKit.muted(this, getString(R.string.donate_network_warning), 10.5f);
+        warning.setPadding(0, dp(9), 0, 0);
+        content.addView(warning, matchWidth());
+
+        ScrollView scroll = new ScrollView(this);
+        scroll.addView(content, new LinearLayout.LayoutParams(-1, -2));
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.donate_dialog_title)
+                .setView(scroll)
+                .setPositiveButton(R.string.close, null)
+                .show();
+    }
+
+    private View buildCryptoAddressRow(String network, String address) {
+        LinearLayout box = new LinearLayout(this);
+        box.setOrientation(LinearLayout.VERTICAL);
+        box.setPadding(dp(11), dp(9), dp(9), dp(9));
+        box.setBackground(UIKit.rounded(0xFFFB7F7FF, 12, this, UIKit.BORDER));
+
+        TextView label = new TextView(this);
+        label.setText(network);
+        label.setTextSize(11.5f);
+        label.setTextColor(UIKit.TEXT);
+        label.setTypeface(label.getTypeface(), Typeface.BOLD);
+        box.addView(label, matchWidth());
+
+        LinearLayout row = new LinearLayout(this);
+        row.setOrientation(LinearLayout.HORIZONTAL);
+        row.setGravity(Gravity.CENTER_VERTICAL);
+        row.setPadding(0, dp(5), 0, 0);
+
+        TextView value = new TextView(this);
+        value.setText(address);
+        value.setTextSize(10.5f);
+        value.setTextColor(UIKit.MUTED);
+        value.setTextIsSelectable(true);
+        value.setTypeface(value.getTypeface(), Typeface.MONOSPACE);
+        row.addView(value, new LinearLayout.LayoutParams(0, -2, 1f));
+
+        Button copy = UIKit.secondaryButton(this, getString(R.string.copy), v -> {
+            ClipboardManager cm = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+            if (cm != null) cm.setPrimaryClip(ClipData.newPlainText(network, address));
+            toast(getString(R.string.copied_address, network));
+        });
+        LinearLayout.LayoutParams copyLp = new LinearLayout.LayoutParams(dp(82), dp(42));
+        copyLp.leftMargin = dp(8);
+        row.addView(copy, copyLp);
+        box.addView(row, matchWidth());
+        return box;
+    }
+
+    private void openWriteSettingsAccess() {
+        waitingWriteSettingsReturn = true;
+        try {
+            Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS);
+            intent.setData(Uri.parse("package:" + getPackageName()));
+            startActivity(intent);
+            return;
+        } catch (Throwable ignored) {
+        }
+        try {
+            startActivity(new Intent(Settings.ACTION_SETTINGS));
+        } catch (Throwable ignored) {
+            waitingWriteSettingsReturn = false;
+            openAppDetails(getString(R.string.system_access_settings_fallback));
+        }
+    }
+
+    private void requestAndroidBatteryExemption() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return;
+        if (BatterySetupState.isIgnoringBatteryOptimizations(this)) {
+            showOnboarding(2);
+            return;
+        }
+        waitingBatterySettingsReturn = true;
+        try {
+            Intent request = new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+            request.setData(Uri.parse("package:" + getPackageName()));
+            startActivity(request);
+        } catch (Throwable ignored) {
+            try {
+                startActivity(new Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS));
+            } catch (Throwable ignoredAgain) {
+                waitingBatterySettingsReturn = false;
+                toast(getString(R.string.battery_request_unavailable));
+            }
+        }
+    }
+
+    private void openAutostartSettings() {
+        Intent action = new Intent("miui.intent.action.OP_AUTO_START");
+        action.setPackage("com.miui.securitycenter");
+
+        Intent direct = componentIntent(
+                "com.miui.securitycenter",
+                "com.miui.permcenter.autostart.AutoStartManagementActivity"
+        );
+
+        if (!tryIntents(new Intent[]{action, direct})) {
+            waitingAutostartSettingsReturn = false;
+            openAppDetails(getString(R.string.settings_hint_autostart));
+        }
+    }
+
+    private Intent componentIntent(String packageName, String className) {
+        return new Intent().setComponent(new ComponentName(packageName, className));
+    }
+
+    private boolean tryIntents(Intent[] intents) {
+        for (Intent intent : intents) {
+            try {
+                startActivity(intent);
+                return true;
+            } catch (Throwable t) {}
+        }
+        return false;
+    }
+
+    private void openAppDetails(String hint) {
+        try {
+            startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                    Uri.parse("package:" + getPackageName())));
+            toast(hint);
+        } catch (Throwable ignored) {
+            try { startActivity(new Intent(Settings.ACTION_SETTINGS)); } catch (Throwable ignoredAgain) {}
+        }
+    }
+
+    private void openFacebookProfile() {
+        try {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/mrhankytb")));
+        } catch (Throwable t) {
+            toast(getString(R.string.facebook_failed));
+        }
+    }
+
+    private void toast(String value) {
+        Toast.makeText(this, value, Toast.LENGTH_SHORT).show();
+    }
+
+    private int dp(int value) { return UIKit.dp(this, value); }
+
+    private LinearLayout.LayoutParams matchWidth() {
+        return new LinearLayout.LayoutParams(-1, -2);
+    }
+
+    private LinearLayout.LayoutParams matchWidthWithBottom(int bottom) {
+        LinearLayout.LayoutParams lp = matchWidth();
+        lp.bottomMargin = bottom;
+        return lp;
+    }
+
+    private LinearLayout.LayoutParams matchWidthWithTop(int top) {
+        LinearLayout.LayoutParams lp = matchWidth();
+        lp.topMargin = top;
+        return lp;
+    }
+
+    private LinearLayout.LayoutParams cardMargin() {
+        LinearLayout.LayoutParams lp = matchWidth();
+        lp.bottomMargin = dp(14);
+        return lp;
+    }
+}
