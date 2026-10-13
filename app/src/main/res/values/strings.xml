@@ -29,6 +29,24 @@
     <string name="setup">Setup</string>
     <string name="setup_again">Review setup</string>
 
+    <!-- Donate & App Info Strings (Bổ sung đầy đủ để khớp với MainActivity) -->
+    <string name="donate_title">Support GMS Protect</string>
+    <string name="donate_desc">Help keep this open-source utility maintained and updated for new HyperOS versions.</string>
+    <string name="donate_button">Donate</string>
+    <string name="donate_thanks">Thank you for supporting GMS Protect!</string>
+    <string name="donate_qr_hint">Scan QR code or copy crypto address below</string>
+    <string name="donate_usdt">USDT Address</string>
+    <string name="donate_network_warning">Make sure to use the correct network (EVM / TRC20) to avoid losing funds.</string>
+    <string name="donate_reminder_title">Support future updates</string>
+    <string name="donate_reminder_message">GMS Protect has been protecting your device for %1$d days. If you find it useful, consider supporting development.</string>
+    <string name="donate_later">Maybe later</string>
+    <string name="donate_dialog_title">Support Development</string>
+    <string name="copied_address">Copied %1$s address</string>
+    <string name="app_info">About app</string>
+    <string name="developer">Developer: muongi3211</string>
+    <string name="facebook">Facebook</string>
+    <string name="facebook_failed">Could not open Facebook profile.</string>
+
     <string name="about_note">GMS Protect is an independent utility and is not affiliated with Google or Xiaomi. Behavior may vary between HyperOS versions.</string>
     <string name="gms_missing">Google Play services is not installed on this device.</string>
     <string name="protect_failed">Unable to send the protection request. Please try again.</string>
@@ -125,6 +143,4 @@
     <string name="battery_request_unavailable">Android battery exemption dialog is unavailable on this device.</string>
     <string name="battery_setup_missing">Review GMS Protect battery policy. Confirm No restrictions in HyperOS; Android exemption is checked separately.</string>
     <string name="compat_android_battery_exemption">Android battery exemption</string>
-
-    
 </resources>
