@@ -584,6 +584,9 @@ public class MainActivity extends Activity {
         note.setPadding(0, dp(6), 0, dp(9));
         card.addView(note);
 
+        card.addView(UiKit.secondaryButton(this, "Mở quản lý quyền MIUI", v ->
+        openAppPermissions()), matchWidthWithTop(dp(9)));
+        
         return card;
     }
 
