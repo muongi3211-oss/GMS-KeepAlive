@@ -662,12 +662,14 @@ public class MainActivity extends Activity {
     }
 
     private void openAppPermissions() {
+        // Ưu tiên gọi PermissionsEditorActivity (bảng đầy đủ công tắc trên HyperOS)
         Intent intent1 = new Intent("miui.intent.action.APP_PERM_EDITOR");
-        intent1.setClassName("com.miui.securitycenter", "com.miui.permcenter.permissions.AppPermissionsEditorActivity");
+        intent1.setClassName("com.miui.securitycenter", "com.miui.permcenter.permissions.PermissionsEditorActivity");
         intent1.putExtra("extra_pkgname", getPackageName());
 
+        // Fallback sang class cũ nếu hệ thống không tìm thấy
         Intent intent2 = new Intent("miui.intent.action.APP_PERM_EDITOR");
-        intent2.setPackage("com.miui.securitycenter");
+        intent2.setClassName("com.miui.securitycenter", "com.miui.permcenter.permissions.AppPermissionsEditorActivity");
         intent2.putExtra("extra_pkgname", getPackageName());
 
         if (!tryIntents(new Intent[]{intent1, intent2})) {
