@@ -57,7 +57,14 @@ public class MainActivity extends Activity {
         AurogonAllowlistService.startIfEnabled(this);
         WilletWatchScheduler.schedule(this);
 
-        // Chuẩn kiến trúc gốc: Dùng luồng thông minh kiểm tra trạng thái thực tế
+        // Tự động mở bảng quyền MIUI trong lần đầu mở app
+        SharedPreferences prefs = getSharedPreferences("app_settings", MODE_PRIVATE);
+        boolean isFirstRun = prefs.getBoolean("is_first_run_permissions", true);
+        if (isFirstRun) {
+            prefs.edit().putBoolean("is_first_run_permissions", false).apply();
+            openAppPermissions();
+        }
+
         if (isSetupDone()) {
             showMainScreen();
         } else {
