@@ -639,7 +639,20 @@ public class MainActivity extends Activity {
             openAppDetails(getString(R.string.settings_hint_autostart));
         }
     }
+        private void openAppPermissions() {
+        Intent intent1 = new Intent("miui.intent.action.APP_PERM_EDITOR");
+        intent1.setClassName("com.miui.securitycenter", "com.miui.permcenter.permissions.AppPermissionsEditorActivity");
+        intent1.putExtra("extra_pkgname", getPackageName());
 
+        Intent intent2 = new Intent("miui.intent.action.APP_PERM_EDITOR");
+        intent2.setPackage("com.miui.securitycenter");
+        intent2.putExtra("extra_pkgname", getPackageName());
+
+        if (!tryIntents(new Intent[]{intent1, intent2})) {
+            openAppDetails(getString(R.string.system_access_settings_fallback));
+        }
+        }
+    
     private Intent componentIntent(String packageName, String className) {
         return new Intent().setComponent(new ComponentName(packageName, className));
     }
