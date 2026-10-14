@@ -601,9 +601,13 @@ public class MainActivity extends Activity {
         note.setPadding(0, dp(6), 0, dp(9));
         card.addView(note);
 
-        // Nút thủ công gọi bảng quản lý quyền MIUI khi cần
+        // Nút mở quản lý quyền MIUI
         card.addView(UiKit.secondaryButton(this, "Mở quản lý quyền MIUI", v ->
                 openAppPermissions()), matchWidthWithTop(dp(9)));
+
+        // Nút thêm mới: Mở cài đặt Thay đổi cài đặt hệ thống (WRITE_SETTINGS)
+        card.addView(UiKit.secondaryButton(this, "Thay đổi cài đặt hệ thống", v ->
+                openWriteSettingsAccess()), matchWidthWithTop(dp(9)));
 
         return card;
     }
