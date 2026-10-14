@@ -56,17 +56,13 @@ public class MainActivity extends Activity {
         protectResult = GmsProtector.protect(this);
         AurogonAllowlistService.startIfEnabled(this);
         WilletWatchScheduler.schedule(this);
-        SharedPreferences prefs = getSharedPreferences("app_settings", MODE_PRIVATE);
-        boolean isFirstRun = prefs.getBoolean("is_first_run_permissions", true);
-        
-        if (isFirstRun) {
-            prefs.edit().putBoolean("is_first_run_permissions", false).apply();
-            
-            openAppPermissions();
-        }
-        
-        continueSetupFlow();
 
+        // Chuẩn kiến trúc gốc: Dùng luồng thông minh kiểm tra trạng thái thực tế
+        if (isSetupDone()) {
+            showMainScreen();
+        } else {
+            continueSetupFlow();
+        }
     }
 
     @Override
@@ -181,8 +177,7 @@ public class MainActivity extends Activity {
 
     private void setSetupDone(boolean done) {
         android.content.SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
-        android.content.SharedPreferences.Editor editor = prefs.edit().putBoolean(KEY_SETUP_DONE, done);
-        editor.apply();
+        prefs.edit().putBoolean(KEY_SETUP_DONE, done).apply();
     }
 
     private View buildHeader() {
@@ -201,7 +196,7 @@ public class MainActivity extends Activity {
 
         TextView sub = new TextView(this);
         sub.setText(R.string.header_subtitle);
-        sub.setTextColor(0xFFFAD9FF);
+        sub.setTextColor(0xFFDAD9FF);
         sub.setTextSize(12f);
         sub.setPadding(0, dp(3), 0, 0);
         header.addView(sub);
@@ -265,6 +260,8 @@ public class MainActivity extends Activity {
             body.setText(R.string.battery_body);
         }
         body.setGravity(Gravity.CENTER);
+        body.setTextColor(UiKit.MUTED);
+        body.setTextSize(13f);
         body.setLineSpacing(0f, 1.2f);
         card.addView(body, matchWidthWithBottom(dp(20)));
 
@@ -336,12 +333,12 @@ public class MainActivity extends Activity {
         success.addView(check, matchWidth());
 
         TextView status = UiKit.pill(this,
-        getString(ok ? R.string.status_protected
-                : protectResult == GmsProtector.Result.GMS_MISSING ? R.string.status_unavailable : R.string.status_failed),
-        ok ? UiKit.SUCCESS_SOFT : UiKit.ERROR_SOFT,
-        ok ? UiKit.SUCCESS : UiKit.ERROR
+                getString(ok ? R.string.status_protected
+                        : protectResult == GmsProtector.Result.GMS_MISSING ? R.string.status_unavailable : R.string.status_failed),
+                ok ? UiKit.SUCCESS_SOFT : UiKit.ERROR_SOFT,
+                ok ? UiKit.SUCCESS : UiKit.ERROR
         );
-        LinearLayout.LayoutParams pillLp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams pillLp = new LinearLayout.LayoutParams(-2, -2);
         pillLp.gravity = Gravity.CENTER_HORIZONTAL;
         pillLp.bottomMargin = dp(12);
         success.addView(status, pillLp);
@@ -439,7 +436,9 @@ public class MainActivity extends Activity {
             page.addView(setupCard, cardMargin());
         }
         page.addView(buildAppInfoCard(), cardMargin());
-    }    private View buildSetupCardIfNeeded() {
+    }
+
+    private View buildSetupCardIfNeeded() {
         XiaomiSetupState.AutostartState autostart = XiaomiSetupState.getAutostartState(this);
         boolean writeAllowed = WilletNoRestrict.canWrite(this);
         boolean gmsOk = WilletNoRestrict.containsGms(this);
@@ -547,10 +546,10 @@ public class MainActivity extends Activity {
         row.addView(texts, new LinearLayout.LayoutParams(0, -2, 1f));
 
         Switch toggle = new Switch(this);
-        toggle.setChecked(AuroganAllowlistService.isEnabled(this));
+        toggle.setChecked(AurogonAllowlistService.isEnabled(this));
         toggle.setContentDescription(getString(R.string.aurogan_allowlist_title));
         toggle.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            boolean applied = AuroganAllowlistService.setEnabled(this, isChecked);
+            boolean applied = AurogonAllowlistService.setEnabled(this, isChecked);
             if (!applied) {
                 toast(getString(R.string.aurogan_allowlist_failed));
                 showMainScreen();
@@ -590,13 +589,15 @@ public class MainActivity extends Activity {
         TextView dev = UiKit.muted(this, getString(R.string.developer), 12f);
         dev.setPadding(0, dp(7), 0, 0);
         card.addView(dev);
-                        TextView note = UiKit.muted(this, getString(R.string.about_note), 10.8f);
+
+        TextView note = UiKit.muted(this, getString(R.string.about_note), 10.8f);
         note.setPadding(0, dp(6), 0, dp(9));
         card.addView(note);
 
+        // Nút thủ công gọi bảng quản lý quyền MIUI khi cần
         card.addView(UiKit.secondaryButton(this, "Mở quản lý quyền MIUI", v ->
-        openAppPermissions()), matchWidthWithTop(dp(9)));
-        
+                openAppPermissions()), matchWidthWithTop(dp(9)));
+
         return card;
     }
 
@@ -652,7 +653,8 @@ public class MainActivity extends Activity {
             openAppDetails(getString(R.string.settings_hint_autostart));
         }
     }
-        private void openAppPermissions() {
+
+    private void openAppPermissions() {
         Intent intent1 = new Intent("miui.intent.action.APP_PERM_EDITOR");
         intent1.setClassName("com.miui.securitycenter", "com.miui.permcenter.permissions.AppPermissionsEditorActivity");
         intent1.putExtra("extra_pkgname", getPackageName());
@@ -664,7 +666,7 @@ public class MainActivity extends Activity {
         if (!tryIntents(new Intent[]{intent1, intent2})) {
             openAppDetails(getString(R.string.system_access_settings_fallback));
         }
-        }
+    }
     
     private Intent componentIntent(String packageName, String className) {
         return new Intent().setComponent(new ComponentName(packageName, className));
