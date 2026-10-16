@@ -28,7 +28,22 @@
     <string name="retry">Bảo vệ lại</string>
     <string name="setup">Thiết lập</string>
     <string name="setup_again">Xem lại thiết lập</string>
-  
+    <string name="donate_title">Donate GMS Protect</string>
+    <string name="donate_desc">GMS Protect miễn phí, không quảng cáo. Nếu thấy hữu ích, bạn có thể Donate để duy trì dự án.</string>
+    <string name="donate_button">Donate</string>
+    <string name="donate_reminder_title">GMS Protect có hữu ích với bạn?</string>
+    <string name="donate_reminder_message">GMS Protect đã được thiết lập %1$d ngày. Nếu ứng dụng hữu ích, bạn có thể Donate cho dự án miễn phí và không quảng cáo này.</string>
+    <string name="donate_later">Để sau</string>
+    <string name="donate_dialog_title">Donate GMS Protect</string>
+    <string name="donate_thanks">Cảm ơn bạn đã Donate cho GMS Protect ❤️</string>
+    <string name="donate_qr_hint">Quét QR bằng ứng dụng ngân hàng. Số tiền hoàn toàn tùy bạn.</string>
+    <string name="donate_usdt">Donate bằng USDT</string>
+    <string name="donate_network_warning">Hãy kiểm tra đúng mạng trước khi chuyển USDT. Gửi sai mạng có thể khiến giao dịch không thể khôi phục.</string>
+    <string name="copied_address">Đã sao chép địa chỉ %1$s</string>
+    <string name="app_info">Thông tin về App</string>
+    <string name="developer">Dev: Hoàng Đức Hanh</string>
+    <string name="facebook">Facebook  @mrhankytb</string>
+    <string name="facebook_failed">Không thể mở Facebook trên thiết bị này.</string>
     <string name="about_note">GMS Protect là tiện ích độc lập, không thuộc Google hoặc Xiaomi. Khả năng hoạt động có thể thay đổi theo từng phiên bản HyperOS.</string>
     <string name="gms_missing">Thiết bị không có Google Play services.</string>
     <string name="protect_failed">Không thể gửi yêu cầu bảo vệ. Hãy thử lại.</string>
